@@ -27,7 +27,9 @@ jobs:
           extra-packages: terra, geodata, shiny, shinythemes
 
       # Build the package
-      - run: R CMD build .
+      - run: R CMD build . 
+        shell: bash
 
       # Check the package
       - run: R CMD check *tar.gz --no-manual --as-cran
+        shell: bash
