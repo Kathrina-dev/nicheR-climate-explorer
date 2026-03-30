@@ -24,9 +24,10 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Raw Data", plotOutput("plot_full")),
+        tabPanel("Masked", plotOutput("plot_masked")),
         tabPanel("Processing", plotOutput("plot_crop")),
         tabPanel("Niche", plotOutput("plot_filtered")),
-        tabPanel("Prediction", plotOutput("plot_suitable"))
+        tabPanel("Prediction", plotOutput("plot_suitable")),
       )
     )
   )
@@ -98,6 +99,11 @@ server <- function(input, output) {
   output$plot_suitable <- renderPlot({
     req(suitable_data())
     terra::plot(suitable_data(), main = "Suitability Map")
+  })
+  
+  output$plot_masked <- renderPlot({
+    req(data())
+    terra::plot(data()$masked, main = "Masked Data")
   })
   
   output$status <- renderText({
