@@ -1,5 +1,16 @@
-.Rproj.user
+# R stuff
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
-.data
+
+# Data files
+data/
+*.tif
+*.grd
+*.gri
+*.nc
+
+# OS junk
+.DS_Store
+Thumbs.db

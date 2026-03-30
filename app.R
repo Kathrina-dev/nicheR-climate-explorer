@@ -5,12 +5,15 @@ library(geodata)
 
 ui <- fluidPage(
   theme = shinytheme("darkly"),
-  titlePanel("🌍 Climate Data Explorer"),
+  titlePanel("Climate Data Explorer"),
   
   sidebarLayout(
     sidebarPanel(
       selectInput("region", "Select Region",
                   choices = c("South America", "Africa", "Asia")),
+      
+      sliderInput("temp_range", "Temperature Range",
+                  min = -10, max = 40, value = c(10, 25)),
       
       actionButton("run", "Run Workflow"),
       
@@ -19,17 +22,12 @@ ui <- fluidPage(
     ),
     
     mainPanel(
-      h3("Global BIO Data"),
-      plotOutput("plot_full"),
-      
-      h3("BIO1 Layer"),
-      plotOutput("plot_bio1"),
-      
-      h3("Cropped Region"),
-      plotOutput("plot_crop"),
-      
-      h3("Final Masked Output"),
-      plotOutput("plot_mask")
+      tabsetPanel(
+        tabPanel("Raw Data", plotOutput("plot_full")),
+        tabPanel("Processing", plotOutput("plot_crop")),
+        tabPanel("Niche", plotOutput("plot_filtered")),
+        tabPanel("Prediction", plotOutput("plot_suitable"))
+      )
     )
   )
 )
@@ -37,7 +35,6 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   data <- eventReactive(input$run, {
-    
     clim <- worldclim_global(var = "bio", res = 10, path = "data")
     bio1 <- clim[[1]]
     
@@ -48,8 +45,6 @@ server <- function(input, output) {
     )
     
     cropped <- crop(bio1, ext_val)
-    
-    # simple mask (just for demo)
     masked <- mask(cropped, cropped)
     
     list(
@@ -60,14 +55,30 @@ server <- function(input, output) {
     )
   })
   
+  # reactive filtering
+  filtered_data <- reactive({
+    req(data())
+    
+    filtered <- data()$cropped
+    
+    vals <- values(filtered)
+    vals[vals < input$temp_range[1] |
+           vals > input$temp_range[2]] <- NA
+    
+    values(filtered) <- vals
+    filtered
+  })
+  
+  suitable_data <- reactive({
+    req(filtered_data())
+    
+    filtered <- filtered_data()
+    filtered > mean(values(filtered), na.rm = TRUE)
+  })
+  
   output$plot_full <- renderPlot({
     req(data())
     plot(data()$full)
-  })
-  
-  output$plot_bio1 <- renderPlot({
-    req(data())
-    plot(data()$bio1)
   })
   
   output$plot_crop <- renderPlot({
@@ -75,9 +86,14 @@ server <- function(input, output) {
     plot(data()$cropped)
   })
   
-  output$plot_mask <- renderPlot({
-    req(data())
-    plot(data()$masked)
+  output$plot_filtered <- renderPlot({
+    req(filtered_data())
+    plot(filtered_data(), main = "Filtered (Niche)")
+  })
+  
+  output$plot_suitable <- renderPlot({
+    req(suitable_data())
+    plot(suitable_data(), main = "Suitability Map")
   })
   
   output$status <- renderText({
