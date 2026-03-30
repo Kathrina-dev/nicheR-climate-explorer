@@ -1,8 +1,10 @@
-# nicheRclimate
+# nicheRclimate [![R-CMD-check](https://github.com/Kathrina-dev/nicheR-climate-explorer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Kathrina-dev/nicheR-climate-explorer/actions/workflows/R-CMD-check.yaml)
 
-**Climate Data Explorer for Ecological Niche Modeling**
+**Climate Data Explorer for Ecological Niche Modeling** 
 
 `nicheRclimate` is an R package and Shiny application designed to facilitate interactive exploration of bioclimatic variables and ecological niche workflows. It provides tools to download, process, filter, and visualize climate raster data, supporting reproducible ecological modeling pipelines.
+
+<img width="1919" height="758" alt="image" src="https://github.com/user-attachments/assets/206772e5-0c1c-4d13-948e-7dd968223fd4" />
 
 ---
 
