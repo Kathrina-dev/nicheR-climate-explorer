@@ -1,0 +1,15 @@
+Package: nicheRclimate
+Type: Package
+Title: Climate Explorer for Niche Modeling
+Version: 0.1.0
+Authors@R: person("KathrinaElangbam", "", email = "kathrinaelangbam@gmail.com", role = c("aut", "cre"))
+Description: Shiny-based climate data exploration tool with niche modeling features.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports:
+    shiny,
+    terra,
+    geodata,
+    shinythemes
+RoxygenNote: 7.3.3

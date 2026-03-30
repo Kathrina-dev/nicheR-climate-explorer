@@ -43,8 +43,8 @@ server <- function(input, output) {
                       "Africa" = ext(-20, 50, -35, 35),
                       "Asia" = ext(60, 150, 5, 55)
     )
-    
-    cropped <- crop(bio1, ext_val)
+
+    cropped <- crop_region(bio1, input$region)
     masked <- mask(cropped, cropped)
     
     list(
@@ -71,29 +71,33 @@ server <- function(input, output) {
   
   suitable_data <- reactive({
     req(filtered_data())
-    
     filtered <- filtered_data()
-    filtered > mean(values(filtered), na.rm = TRUE)
+    threshold <- mean(values(filtered), na.rm = TRUE)
+    out <- filtered
+    vals <- values(filtered)
+    vals[vals <= threshold] <- NA
+    values(out) <- vals
+    out
   })
-  
+
   output$plot_full <- renderPlot({
     req(data())
-    plot(data()$full)
+    terra::plot(data()$bio1, main = "BIO1 Global")
   })
   
   output$plot_crop <- renderPlot({
     req(data())
-    plot(data()$cropped)
+    terra::plot(data()$cropped, main = "Cropped Data")
   })
-  
+
   output$plot_filtered <- renderPlot({
     req(filtered_data())
-    plot(filtered_data(), main = "Filtered (Niche)")
+    terra::plot(filtered_data(), main = "Filtered (Niche)")
   })
-  
+
   output$plot_suitable <- renderPlot({
     req(suitable_data())
-    plot(suitable_data(), main = "Suitability Map")
+    terra::plot(suitable_data(), main = "Suitability Map")
   })
   
   output$status <- renderText({
@@ -105,4 +109,6 @@ server <- function(input, output) {
   })
 }
 
-shinyApp(ui, server)
+run_app <- function() {
+  shinyApp(ui, server)
+}
