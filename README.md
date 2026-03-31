@@ -4,7 +4,15 @@
 
 `nicheRclimate` is an R package and Shiny application designed to facilitate interactive exploration of bioclimatic variables and ecological niche workflows. It provides tools to download, process, filter, and visualize climate raster data, supporting reproducible ecological modeling pipelines.
 
-<img width="1919" height="758" alt="image" src="https://github.com/user-attachments/assets/206772e5-0c1c-4d13-948e-7dd968223fd4" />
+<img width="1919" height="671" alt="image" src="https://github.com/user-attachments/assets/0172bf0d-596c-49ea-8741-e6327341f5c9" />
+
+---
+
+<img width="1919" height="655" alt="image" src="https://github.com/user-attachments/assets/8d68e885-ad2c-4ac3-9c65-7d9bb485acf6" />
+
+---
+
+<img width="1919" height="653" alt="image" src="https://github.com/user-attachments/assets/68200fdb-417e-4f04-8b5e-4c36b69e7fb4" />
 
 ---
 
